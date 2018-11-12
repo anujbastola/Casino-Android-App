@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Buttons on the top of main activity-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/saveGame"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_game"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/helpButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="displayGetHelp"
+                android:text="@string/help"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/infoButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="displayInfoBox"
+                android:text="Info?"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/displayScore"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="displayScoreBox"
+                android:text="Score"
+                android:layout_weight="1"/>
+
+            <!--<Button-->
+                <!--android:id="@+id/exitButton"-->
+                <!--style="@style/Widget.AppCompat.Button.Colored"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Exit?"/>-->
+        </LinearLayout>
+
+
+        <!--This layout displays the cards from computer's hand -->
+        <LinearLayout
+            android:id="@+id/computerCardBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
+        </LinearLayout>
+
+
+        <!--This layout displays all the cards from table-->
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/tableCardBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <!-- Buttons on the top of Human Hand Card, Options for move -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
+
+            <Button
+                android:id="@+id/capture"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAPTURE"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/setBuild"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SET BUILD"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/trail"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TRAIL"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+        <!-- Buttons on the top of Human Hand Card, Options for move -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
+
+            <Button
+                android:id="@+id/extendBuild"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Extend Build"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/multiBuild"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Multi Build"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+        <!-- This layout displays all the cards from human's  hand-->
+        <LinearLayout
+            android:id="@+id/humanCardBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

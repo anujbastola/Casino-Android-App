@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CasinoApp</string>
+    <string name="help">Get Help!</string>
+    <string name="save_game">SAVE</string>
+</resources>
