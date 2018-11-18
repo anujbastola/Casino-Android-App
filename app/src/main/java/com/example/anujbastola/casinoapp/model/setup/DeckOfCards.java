@@ -3,6 +3,7 @@ package com.example.anujbastola.casinoapp.model.setup;
 
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -41,23 +42,26 @@ public class DeckOfCards{
         // Stores all four suits
         String suits[] = { "H", "C", "S", "D"};
 
+        // All cards are stored in this ArrayList to shuffle by using Collection.shuffle function
+
+        ArrayList<String> toShuffleDeck = new ArrayList<>();
         // Goes through all the faces and int and stores all unique cards in a deck
         for ( int i =0; i<13; i++){
             for ( int j =0; j<4; j++){
                 Cards temp = new Cards(suits[j], faces[i]);
+                toShuffleDeck.add(temp.toString());
                 deck.add(temp);
             }
         }
-        System.out.println("Printing decks before shuffle");
-        printDeck();
-        shuffleCards();
-        System.out.println("Shuffled Decks:");
-        printDeck();
+        Collections.shuffle(toShuffleDeck);
+        deck.clear();
+        for ( String card: toShuffleDeck){
+            Cards temp = new Cards(card.substring(0,1), card.substring(1,2));
+            deck.add(temp);
+        }
 
-    }
+        System.out.println("Shuffled Decks: " + deck);
 
-    public void shuffleCards(){
-        System.out.println("Shuffle deck of cards");
     }
 
     /* *********************************************************************
@@ -76,8 +80,7 @@ public class DeckOfCards{
     public void printDeck(){
         System.out.println("Deck:");
         for ( Cards oneCard : deck){
-            System.out.print(oneCard.toString());
-            System.out.print(" ");
+            System.out.print("Card:: " + oneCard.toString() + " ");
         }
         System.out.println();
     }
@@ -134,14 +137,17 @@ public class DeckOfCards{
 
 
     public static void main(String[] args){
-        DeckOfCards deckOfCards = new DeckOfCards();
-
-        for ( int i = 0; i<10; i++){
-            System.out.print(deckOfCards.returnFrontCard().toString());
-            System.out.print(" ");
+        String line = "Hand: S7 D5 HQ";
+        String sepated = line.split(": ")[1];
+        String cards[] = {};
+        cards = sepated.split(" ");
+        for ( int i = 0; i<cards.length; i++){
+            System.out.println("Card: " + cards[i]);
+            String suit = cards[i].substring(0,1);
+            String face = cards[i].substring(1,2);
+            System.out.println("Face is " + face);
+            System.out.println("Suit is " + suit);
         }
-        System.out.println();
-        deckOfCards.printDeck();
 
     }
 

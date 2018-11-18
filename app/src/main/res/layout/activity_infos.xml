@@ -11,8 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-
         <!--Computer Pile Text View-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,19 +22,18 @@
                 android:text="Computer's Pile"/>
         </LinearLayout>
 
-
         <!--Scrollable View to display cards from computer's pile -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
+                android:background="@drawable/mainactivityborder"
                 android:id="@+id/computerPileDisplay">
             </LinearLayout>
         </HorizontalScrollView>
-
 
         <!--Human Pile Text View-->
         <LinearLayout
@@ -49,7 +46,6 @@
                 android:text="Human's Pile"/>
         </LinearLayout>
 
-
         <!--Scrollable View to display cards from human's pile -->
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -57,8 +53,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
+                android:background="@drawable/mainactivityborder"
                 android:id="@+id/humanPileDisplay">
             </LinearLayout>
         </HorizontalScrollView>
@@ -71,7 +68,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Human's Pile"/>
+                android:text="Deck Cards"/>
         </LinearLayout>
 
         <!--Scrollable View to display cards from Deck -->
@@ -81,13 +78,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
+                android:minWidth="400dp"
+                android:background="@drawable/mainactivityborder"
                 android:id="@+id/deckDisplay">
 
             </LinearLayout>
         </HorizontalScrollView>
-
 
 
     </LinearLayout>

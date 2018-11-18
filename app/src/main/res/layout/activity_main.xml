@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save_game"
+                android:textSize="12sp"
                 android:layout_weight="1"/>
 
             <Button
@@ -34,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="displayGetHelp"
                 android:text="@string/help"
+                android:textSize="12sp"
                 android:layout_weight="1"/>
 
             <Button
@@ -43,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="displayInfoBox"
                 android:text="Info?"
+                android:textSize="12sp"
                 android:layout_weight="1"/>
 
             <Button
@@ -52,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="displayScoreBox"
                 android:text="Score"
+                android:textSize="12sp"
                 android:layout_weight="1"/>
 
             <!--<Button-->
@@ -69,7 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/mainactivityborder"
+            android:weightSum="4">
         </LinearLayout>
 
 
@@ -82,9 +88,10 @@
             <LinearLayout
                 android:id="@+id/tableCardBox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="290dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/mainactivityborder">
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -95,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="3"
+            android:weightSum="5"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp">
 
@@ -105,7 +112,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CAPTURE"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:padding="0dp"
+                android:onClick="humanCaptureMove"/>
 
             <Button
                 android:id="@+id/setBuild"
@@ -113,7 +123,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SET BUILD"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:padding="0dp"/>
 
             <Button
                 android:id="@+id/trail"
@@ -121,19 +133,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TRAIL"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-
-        <!-- Buttons on the top of Human Hand Card, Options for move -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp">
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:padding="0dp"
+                android:onClick="trailHumanCard"/>
 
             <Button
                 android:id="@+id/extendBuild"
@@ -141,7 +144,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Extend Build"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:padding="0dp"/>
 
             <Button
                 android:id="@+id/multiBuild"
@@ -149,10 +154,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Multi Build"
-                android:layout_weight="1"/>
-
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:padding="0dp"/>
 
         </LinearLayout>
+
 
 
         <!-- This layout displays all the cards from human's  hand-->
@@ -160,10 +167,9 @@
             android:id="@+id/humanCardBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/mainactivityborder">
         </LinearLayout>
-
-
 
 
 
