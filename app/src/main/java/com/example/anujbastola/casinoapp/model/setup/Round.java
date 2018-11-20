@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -35,6 +36,8 @@ public class Round {
 
     // Stores the name of the last capture
     private String lastCapture;
+
+    private Cards globalCard = new Cards();
 
 
 //    ------------------- Public Methods -------------------------
@@ -123,10 +126,13 @@ public class Round {
     //------------------------------------------------------------------------------------------------------------------------------------------
     public void addCardsPlayer() {
         System.out.println("I am inside Add");
-        Cards temp;
-        temp = deck.returnFrontCard();
-        System.out.println("Printing the added card: " + temp);
-        player1.addCard(temp);
+        ;
+        for (int i = 0; i < 4; i++) {
+            player1.addCard(deck.returnFrontCard());
+        }
+        for (int i = 0; i < 4; i++) {
+            player2.addCard(deck.returnFrontCard());
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -205,19 +211,24 @@ public class Round {
 
     //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public void playGame(){
+    public void playGame() {
         System.out.println("In Play Game Round class");
         player1.play(table);
+
+        Deque<Deque<Cards>> tableGet = player1.getTable();
+        table = tableGet;
+        System.out.println("Original Table in round class: " + table);
+        System.out.println("Table From PlayerClass " + tableGet);
     }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-    public String getComputerMoveInfo(){
-        return  player1.getComputerMoveInfo();
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public String getComputerMoveInfo() {
+        return player1.getComputerMoveInfo();
     }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-    public  void trailHumanCard(String humanCard){
-        Cards toAddInTable = new Cards(humanCard.substring(0,1), humanCard.substring(1,2));
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public void trailHumanCard(String humanCard) {
+        Cards toAddInTable = new Cards(humanCard.substring(0, 1), humanCard.substring(1, 2));
         System.out.println("Card object for human card selected: " + toAddInTable.toString());
 
         Deque<Cards> toTrailInTable = new ArrayDeque<>();
@@ -229,33 +240,113 @@ public class Round {
         player2.deleteHandCard(toAddInTable);
     }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-    public void doCaptureMoveForHuman(Deque<String> selectedTableCards, String selectedHandCard){
-            player2.setTable(table);
-            Cards humanCard = new Cards(selectedHandCard.substring(0,1), selectedHandCard.substring(1,2));
-            player2.addToPile(humanCard);
-            player2.deleteHandCard(humanCard);
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public void doCaptureMoveForHuman(Deque<String> selectedTableCards, String selectedHandCard) {
+        player2.setTable(table);
+        Cards humanCard = new Cards(selectedHandCard.substring(0, 1), selectedHandCard.substring(1, 2));
+        player2.addToPile(humanCard);
+        player2.deleteHandCard(humanCard);
 
-            for ( String tableCard : selectedTableCards){
-                Cards temp = new Cards(tableCard.substring(0,1), tableCard.substring(1,2));
-                Deque<Cards> deq = new ArrayDeque<>();
-                deq.add(temp);
-                System.out.println("Deq to delete: " + deq);
-                player2.deleteCardFromTable(deq);
-                player2.addToPile(temp);
-            }
-            table = player2.returnTableToRoundClass();
-            System.out.println("Table After capture: " + table);
-            System.out.println("Hand after capture: " + player2.returnPlayerHand());
+        for (String tableCard : selectedTableCards) {
+            Cards temp = new Cards(tableCard.substring(0, 1), tableCard.substring(1, 2));
+            Deque<Cards> deq = new ArrayDeque<>();
+            deq.add(temp);
+            System.out.println("Deq to delete: " + deq);
+            player2.deleteCardFromTable(deq);
+            player2.addToPile(temp);
+        }
+        System.out.println("Table before capture return ------ " + table);
+        table = player2.returnTableToRoundClass();
+        System.out.println("Table After capture: " + table);
+        System.out.println("Hand after capture: " + player2.returnPlayerHand());
     }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+    public void doSetBuildForHuman(Deque<String> selectedTableCards, String selectedHandCard) {
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+        player2.setTable(table);
+        Cards humanCard = new Cards(selectedHandCard.substring(0, 1), selectedHandCard.substring(1, 2));
+        player2.deleteHandCard(humanCard);
+        Deque<Cards> build = new ArrayDeque<>();
+        for (String oneSelectedCard : selectedTableCards) {
+            Cards temp = new Cards(oneSelectedCard.substring(0, 1), oneSelectedCard.substring(1, 2));
+            build.add(temp);
+        }
+        player2.deleteCardFromTable(build);
+        System.out.println("Table Is before adding build and after deleting table cards: " + table);
+        build.add(humanCard);
+        table.addFirst(build);
+        System.out.println("Table after adding build: " + table);
+    }
 
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public void doCaptureBuildForHuman(Deque<String> selectedTableCards, String selectedHandCard) {
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+        player2.setTable(table);
+        System.out.println("Table in do capture build in round class " + selectedTableCards);
+        Cards humanCard = new Cards(selectedHandCard.substring(0, 1), selectedHandCard.substring(1, 2));
+        Deque<Cards> build = new ArrayDeque<>();
+        int sum = 0;
+        for (String oneSelectedCard : selectedTableCards) {
+            Cards temp = new Cards(oneSelectedCard.substring(0, 1), oneSelectedCard.substring(1, 2));
+            System.out.println("Card number(Built): " + player2.getCardNumber(temp));
+            System.out.println("Sum(loop): " + sum);
+            sum = player2.getCardNumber(temp) + sum;
+            build.add(temp);
+        }
+        System.out.println("Sum of build: " + sum);
+
+        int handNumber = player2.getCardNumber(humanCard);
+        System.out.println("Card number of hand card: " + handNumber);
+        System.out.println("Build: " + build);
+        if (sum == handNumber) {
+            deleteBuiltFromTable(build);
+            player2.deleteHandCard(humanCard);
+
+            for (Cards a : build) {
+                player2.addToPile(a);
+            }
+            player2.addToPile(humanCard);
+        }
+        System.out.println("Table After capturing build: " + table);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public void deleteBuiltFromTable(Deque<Cards> toDelete) {
+        System.out.println("Table before deleting: " + toDelete);
+        Deque<Deque<Cards>> tempTable = new ArrayDeque<>();
+        for (Deque<Cards> insideTable : table) {
+            boolean check = false;
+            for ( Cards inDelete : toDelete){
+                if ( insideTable.peekFirst().toString().equals(inDelete.toString())){
+                    // if this is the built
+                    check = true;
+                }
+            }
+            if ( check){
+                // do not add anything
+            }
+            else {
+                tempTable.add(insideTable);
+            }
+//            if (insideTable.peekFirst().toString().equals(toDelete.peekFirst().toString())) {
+//                System.out.println("This will not be added to temptable " + insideTable);
+//            } else {
+//                tempTable.add(insideTable);
+//            }
+        }
+        System.out.println("Temp Table after deleting built is " + tempTable);
+        table = tempTable;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    public String getHelp() {
+        player2.setTable(table);
+        String help = player2.askForHelp(table);
+
+        return help;
+    }
 
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -284,11 +375,11 @@ public class Round {
                 if (lineNumber == 1) {
                     roundNumber = Integer.parseInt(line.split(": ")[1]);
                     roundNum = roundNumber;
-                    System.out.println("Round NUmber is " + roundNumber);
+                    // System.out.println("Round NUmber is " + roundNumber);
                 }
                 if (lineNumber == 4) {
                     computerScore = Integer.parseInt(line.split(": ")[1]);
-                    System.out.println("Computer Score: " + computerScore);
+                    //System.out.println("Computer Score: " + computerScore);
                 }
                 // Cards from computer's hand
                 if (lineNumber == 5) {
@@ -321,7 +412,7 @@ public class Round {
                 // Human Score
                 if (lineNumber == 8) {
                     humanScore = Integer.parseInt(line.split(": ")[1]);
-                    System.out.println("Human Score: " + humanScore);
+                    //System.out.println("Human Score: " + humanScore);
                 }
                 // Cards from human's hand
                 if (lineNumber == 9) {
@@ -353,6 +444,22 @@ public class Round {
 
                 // Getting table cards
                 if (lineNumber == 12) {
+
+                    System.out.println("Table Line is " + line);
+                    String[] filetable = getStringForCards(line);
+
+                    System.out.println("Table Cards From File" + filetable);
+                    System.out.println(filetable.length);
+
+                    for (int i = 0; i < filetable.length; i++) {
+                        String suit = filetable[i].substring(0, 1);
+                        String face = filetable[i].substring(1, 2);
+                        Cards cards = new Cards(suit, face);
+                        System.out.print(cards.toString() + " ");
+                        Deque<Cards> temp = new ArrayDeque<>();
+                        temp.add(cards);
+                        mytable.add(temp);
+                    }
 
                 }
 
@@ -412,6 +519,8 @@ public class Round {
             // Setting deck of cards
             deck.setDeck(mydeck);
 
+            table = mytable;
+            System.out.println("At last the table is " + table);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -436,6 +545,11 @@ public class Round {
             String separated = line.split(": ")[1];
             String cards[] = {};
             cards = separated.split(" ");
+            System.out.println("Cards in getString for cards: ");
+            for (int i = 0; i < cards.length; i++) {
+                System.out.print(cards[i] + " ");
+            }
+            System.out.println();
             if (cards.length == 0) {
                 System.out.println("Zero");
             }
@@ -476,7 +590,65 @@ public class Round {
         }
         System.out.println();
 
+    }
 
+    // Calculates the score of players after the round is completed using Player's Pile
+    public void calculateScore() {
+
+        // The player with the most cards in the pile gets 3 points. In the event of a tie, neither player gets points.
+        int initialComp = player1.getScore();
+        int initialHuman = player2.getScore();
+
+        System.out.println("Computer Score Initial: " + initialComp);
+        System.out.println("Human Score Initial: " + initialHuman);
+
+        int computerPileSize = player1.getPileSize();
+        int humanPileSize = player2.getPileSize();
+        System.out.println("Computer Pile Size: " + computerPileSize);
+        System.out.println("Human Pile Size: " + humanPileSize);
+
+        if (computerPileSize > humanPileSize) {
+            player1.addScore(3);
+        } else if (computerPileSize < humanPileSize) {
+            player2.addScore(3);
+        }
+
+        //The player with the most spades gets 1 point. In the event of a tie, neither player gets points.
+        int computerSpadesNum = player1.getSpadesNum();
+        int humanSpadesNum = player2.getSpadesNum();
+        System.out.println("Computer Spades Number: " + computerSpadesNum);
+        System.out.println("Human Spades Number: " + humanSpadesNum);
+
+        if (computerSpadesNum > humanSpadesNum) {
+            player1.addScore(1);
+        } else if (computerSpadesNum < humanSpadesNum) {
+            player2.addScore(1);
+        }
+
+        //The player with 10 of Diamonds gets 2 points.
+        if (player1.hasTenOfDiamonds()) {
+            player1.addScore(2);
+        } else if (player2.hasTenOfDiamonds()) {
+            player2.addScore(2);
+        }
+
+        //The player with 2 of Spades gets 1 point.
+        if (player1.hasTwoOfSpades()) {
+            player1.addScore(1);
+        } else if (player2.hasTwoOfSpades()) {
+            player2.addScore(1);
+        }
+
+        // Each player gets one point per Ace.
+
+        int acePlayer1 = player1.getAceNum();
+        int acePlayer2 = player2.getAceNum();
+
+        player1.addScore(acePlayer1);
+        player2.addScore(acePlayer2);
+
+        System.out.println("Computer Score in that round is " + (player1.getScore() - initialComp));
+        System.out.println("Human Score in that round is " + (player2.getScore() - initialHuman));
     }
 
 

@@ -5,14 +5,18 @@ import com.example.anujbastola.casinoapp.model.setup.Cards;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
     // Holds the cards that are currently on the table
-    protected Deque<Deque<Cards>> table = new ArrayDeque<>();
+    private Deque<Deque<Cards>> table = new ArrayDeque<>();
+
+    // Stores all the builts from table
+    private Deque<Deque<Cards>> builtFromTable = new ArrayDeque<>();
 
     // Every time a move is made, this variable sets if the move is capture;
-    protected boolean isLastCapture;
+    private boolean isLastCapture;
 
     private int score;
 
@@ -24,30 +28,70 @@ public class Player {
 
     private Deque<Deque<Cards>> subsets = new ArrayDeque<>();
 
-    private Deque<Deque<Cards>> possibleBuilds = new ArrayDeque<>();
+    protected Deque<Deque<Cards>> possibleBuilds = new ArrayDeque<>();
 
-    private Deque<Cards> built = new ArrayDeque<>();
+    protected Deque<Cards> built = new ArrayDeque<>();
 
     private Deque<Deque<Cards>> tempTable = new ArrayDeque<>();
 
     private Deque<Deque<Cards>> matches = new ArrayDeque<>();
 
-    private Build build = new Build();
+    protected Build build = new Build();
 
     private  Cards handUsed = new Cards();
 
     private String computerMoveInfo;
 
+    // Get the builts that are in table
+    public Deque<Deque<Cards>> getBuiltFromTable() {
+        return builtFromTable;
+    }
 
     public void play(Deque<Deque<Cards>> tablefromRound){
+
         System.out.println("In Play in Player class");
         System.out.println("Player Hand: " + playersHand);
         System.out.println("Table received from round class: " + tablefromRound);
-        table.clear();
 
+        System.out.println("Table At top is " + table);
         table = tablefromRound;
         System.out.println("Table Copied: " + table);
 
+
+//        lookforSingleBuild();
+//        System.out.println("Possible Builds are: " + possibleBuilds);
+//        findBestSingleBuild();
+//        System.out.println("Builts are: " + built);
+//
+//        Deque<Deque<Cards>> builtsFromTable = getBuiltsFromTable();
+//
+//        // if statement to check if built still exists on table
+//        // One player's built can be captured by another player, without changing the owner status
+//        if ( hasOwnBuild(builtsFromTable)){
+//            System.out.println("Has Own Build");
+//            System.out.println("Own Build in table: " + build.getBuilt());
+//        }
+//        else {
+//            build.emptyBuilt();
+//            build.setOwner(false);
+//        }
+//        int buildPosition = 0;
+
+
+//        else if(built.size() > 0){
+//            System.out.println("Setting Build Is Possible.");
+//            computerMoveInfo = "Computer chose to set build on table. Build Done: " + built + " Hand Card Used: " + built.peekLast() + ".";
+//            addBuiltToTable(built);
+//            deleteCardFromTable(built);
+//            System.out.println("Table After returning: " + table);
+//            deleteHandCard(built.peekLast());
+//            isBuildOwner = true;
+//            build.setBuilts(built);
+//            isLastCapture = false;
+//        }
+
+        // This is used to track hand card to be used to capture build
+        int buildPosition = 0;
         if ( DXCaptureIsPossible()){
             System.out.println("Inside DX capture if");
             captureCards();
@@ -57,6 +101,28 @@ public class Player {
             System.out.println("Inside ACE capture if");
             captureCards();
             isLastCapture = true;
+        }
+        else if(isBuildCapturePossible(buildPosition)){
+            System.out.println("Inside isBuildCapturePossible");
+            System.out.println("Hand card used to capture is " + handUsed.toString());
+            System.out.println("Position of build that can be captured: " + buildPosition);
+            for (Deque<Cards> insideTable: table ){
+                int sum = 0;
+                if (insideTable.size() > 1 ){
+                    for ( Cards temp: insideTable){
+                        sum = sum + getCardNumber(temp);
+                    }
+                    if ( sum == getCardNumber(handUsed)){
+                        computerMoveInfo = "Build " + insideTable + " is Captured by using computer "+ handUsed.toString()  + " card.";
+                        deleteBuiltFromTable(insideTable);
+                        for ( Cards toAdd : insideTable){
+                            addToPile(toAdd);
+                        }
+                        addToPile(handUsed);
+                        deleteHandCard(handUsed);
+                    }
+                }
+            }
         }
         else if (isThereCapture()){
             System.out.println("Inside IS there Capture");
@@ -68,17 +134,25 @@ public class Player {
         }
         else {
             // If there is no any other move, then trail a card
+            System.out.println("Inside Trail If statement");
             Cards temp = playersHand.poll();
             computerMoveInfo = "Computer chose to trail " + temp.toString();
             addCardTable(temp);
             isLastCapture = false;
         }
 
-        tablefromRound = table;
 
+        tablefromRound = table;
+        System.out.println("Table From Round at End: " + tablefromRound);
+        System.out.println("Table: " + table);
+        System.out.println("Player Hand at End: " + playersHand);
+        clearDequeValues();
     }
 
 
+    public Deque<Deque<Cards>> getTable(){
+        return table;
+    }
 
 
     // -------------------------------------------------------------------------------------------------------------
@@ -110,6 +184,8 @@ public class Player {
                 }
                 for ( Cards handC: playersHand){
                     if ( sum == getCardNumber(handC)){
+                        handUsed = handC;
+                        System.out.println("Hand is in 123: " + handUsed.toString());
                         return true;
                     }
                 }
@@ -117,6 +193,7 @@ public class Player {
             position++;
         }
         return  false;
+
     }
 
     // -------------------------------------------------------------------------------------------------------------
@@ -138,25 +215,19 @@ public class Player {
         String playerHandCardUsed = handUsed.toString();
         System.out.println("Player Hand Card Used: " + playerHandCardUsed);
         computerMoveInfo = "Computer chose to capture card(s) " + largeCapture + " by using it's " + playerHandCardUsed + " card";
-        System.out.println("Computer Move info: " + computerMoveInfo);
-        System.out.println("After move string");
 
         for ( Cards capt: largeCapture){
             addToPile(capt);
             Deque<Cards> temp = new ArrayDeque<>();
             temp.add(capt);
             deleteCardFromTable(temp);
-            System.out.println("In loop: " + table);
         }
 
         System.out.println("Table After delete: " + table);
-       // deleteCardTable(largeCapture);
-
         deleteHandCard(handUsed);
         System.out.println("Hand After delete: " + playersHand);
 
         addToPile(handUsed);
-
     }
 
 
@@ -167,8 +238,22 @@ public class Player {
         Deque<Deque<Cards>> deletedCardTable = new ArrayDeque<>();
 
         for ( Deque<Cards> insideTable : table){
-            if (insideTable.peekFirst().toString().equals(temp.peekFirst().toString())){
-                // do not add to temp table
+            if ( insideTable.size() == 1){
+                boolean toDelete = true;
+
+                for ( Cards insideTemp : temp){
+                    if ( insideTable.peekFirst().toString().equals(insideTemp.toString())){
+                        toDelete = false;
+                    }
+                }
+
+                if (toDelete){
+                    // do not add to temp table
+                    deletedCardTable.add(insideTable);
+                }
+                else {
+
+                }
             }
             else {
                 deletedCardTable.add(insideTable);
@@ -180,16 +265,12 @@ public class Player {
         for ( Deque<Cards> insideTempTable: deletedCardTable){
             table.add(insideTempTable);
         }
-
-        System.out.println("Delete Card From Table in Player Class: " + table);
     }
 
 
     // -------------------------------------------------------------------------------------------------------------
     public  void getMatchesForCapture(){
-        Deque<Deque<Cards>> tempTable = new ArrayDeque<>();
-        tempTable = table;
-       // System.out.println("Table(tempTable) getMatches before return: " + tempTable);
+
         for ( Deque<Cards> insideTable : table){
             int sum = 0;
             for ( Cards a : insideTable){
@@ -203,6 +284,7 @@ public class Player {
                         toAddInMatch.add(toadd);
                     }
                     toAddInMatch.add(b);
+                    System.out.println("Matches --> " + toAddInMatch);
                     matches.add(toAddInMatch);
                 }
             }
@@ -213,9 +295,11 @@ public class Player {
     // -------------------------------------------------------------------------------------------------------------
     public  boolean isThereCapture(){
         System.out.println("Table IN is there capture(first): " + table);
-        getMatchesForCapture();
+        //getMatchesForCapture();
 
-        if ( matches.size() > 0){
+        Deque<Deque<Cards>> possibleCap = possibleCaptures();
+        System.out.println("Possible Captures: " + possibleCap);
+        if ( possibleCap.size() > 0){
             System.out.println("Table IN is there capture(after): " + table);
             return true;
         }
@@ -236,7 +320,7 @@ public class Player {
         for ( Deque<Cards>  inTable: table){
             if ( inTable.size() == 1){
                 received = checkCard(inTable.peekFirst(), deleteFrom);
-                if ( received == true){
+                if ( received){
                     tempTable.add(inTable);
                 }
             }
@@ -279,7 +363,9 @@ public class Player {
     Assistance Received: none
     ********************************************************************* */
     public  void addBuiltToTable(Deque<Cards> add){
+        System.out.println("Built to be Added in table: " + add);
         table.addFirst(add);
+        System.out.println("Table after adding build: " + table);
     }
 
     //  -------------------------------------------------------------------------------------------------------------
@@ -312,26 +398,29 @@ public class Player {
     //  -------------------------------------------------------------------------------------------------------------
     public void lookforSingleBuild() {
         int number;
-        int size = 0;
+        subsets.clear();
+        subsets = getAllSubsets();
+        System.out.println("Subsets are: " + subsets);
         Deque<Cards> temp = new ArrayDeque<>();
         for (Cards playerCard : playersHand) {
 
             number = getCardNumber(playerCard);
 
-            for (Deque<Cards> a : subsets) {
+            for (Deque<Cards> oneSubset : subsets) {
                 int sum = 0;
-                for (Cards b : a) {
+                for (Cards b : oneSubset) {
                     sum = sum + getCardNumber(b);
                 }
                 int totalSum = number + sum;
 
                 for (Cards playerCard2 : playersHand) {
                     int playerNumber = getCardNumber(playerCard2);
-                    if ((totalSum == playerNumber) && (playerCard2.toString().equals(playerCard.toString()))) {
-                        addToPossibleBuild(a, playerCard);
+                    //System.out.println("Player Number: " + playerNumber + " Subset sum: " + sum);
+                    if ((totalSum == playerNumber) && !(playerCard2.toString().equals(playerCard.toString()))) {
+                        System.out.println("Can Build: "+ oneSubset+ " Hand: " + playerCard.toString());
+                        addToPossibleBuild(oneSubset, playerCard);
                     }
                 }
-                size = a.size();
             }
         }
     }
@@ -505,12 +594,6 @@ public class Player {
     }
 
     // -------------------------------------------------------------------------------------------------------------
-    // Delete dealt card from player's hand
-    public void deleteDealtCard(Cards dealtCard) {
-        playersHand.remove(dealtCard);
-    }
-
-    // -------------------------------------------------------------------------------------------------------------
     public void setBuildInBuildClass(Deque<Cards> buildToSet){
         isBuildOwner = true;
         build.setBuilts(buildToSet);
@@ -633,11 +716,9 @@ public class Player {
             // returns all the possible captured possible by using that card
 
             captureTemp = getPossible(card);
-            System.out.println("capture temp in possibleCaptures: " + captureTemp);
             int num = getNumberOfCards(captureTemp);
             if (num > size) {
                 handUsed = card;
-                System.out.println("Hand Used || Card : " + handUsed.toString());
                 capturePossible.clear();
                 capturePossible = captureTemp;
                 size = num;
@@ -651,7 +732,7 @@ public class Player {
         Deque<Deque<Cards>> forCheck = new ArrayDeque<>();
 
         Deque<Deque<Cards>> subsets = getAllSubsets();
- //       System.out.println("Subsets in getPossible: " + subsets);
+        System.out.println("Subsets in getPossible: " + subsets);
 
         for ( Deque<Cards> a : subsets){
             int sum = 0;
@@ -718,7 +799,7 @@ public class Player {
     }
 
     // -------------------------------------------------------------------------------------------------------------
-    public Deque<Deque<Cards>> getBuilts() {
+    private Deque<Deque<Cards>> getBuiltsFromTable() {
         Deque<Deque<Cards>> toReturn = new ArrayDeque<>();
         for (Deque<Cards> insideTable : table) {
             if (insideTable.size() > 1) {
@@ -781,7 +862,17 @@ public class Player {
     Assistance Received: none
     ********************************************************************* */
     public void deleteBuiltFromTable(Deque<Cards> toDelete) {
-        table.remove(toDelete);
+        Deque<Deque<Cards>> tempTable = new ArrayDeque<>();
+        for ( Deque<Cards> insideTable: table ){
+            if ( insideTable.peekFirst().toString().equals(toDelete.peekFirst().toString())){
+                System.out.println("This will not be added to temptable " + insideTable );
+            }
+            else {
+                tempTable.add(insideTable);
+            }
+        }
+        System.out.println("Temp Table after deleting built is " + tempTable);
+        table = tempTable;
     }
 
     // -------------------------------------------------------------------------------------------------------------

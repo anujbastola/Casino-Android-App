@@ -22,11 +22,11 @@
             <Button
                 android:id="@+id/saveGame"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/save_game"
-                android:textSize="12sp"
-                android:layout_weight="1"/>
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/helpButton"
@@ -41,29 +41,32 @@
             <Button
                 android:id="@+id/infoButton"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:onClick="displayInfoBox"
                 android:text="Info?"
-                android:textSize="12sp"
-                android:layout_weight="1"/>
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/displayScore"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="66dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:onClick="displayScoreBox"
                 android:text="Score"
-                android:textSize="12sp"
-                android:layout_weight="1"/>
+                android:textSize="12sp" />
 
-            <!--<Button-->
-                <!--android:id="@+id/exitButton"-->
-                <!--style="@style/Widget.AppCompat.Button.Colored"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Exit?"/>-->
+            <Button
+                android:id="@+id/compMove"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12dp"
+                android:onClick="doMoveForComputer"
+                android:text="Do Move?"/>
         </LinearLayout>
 
 
@@ -83,15 +86,17 @@
 
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/tableScrollable">
 
             <LinearLayout
                 android:id="@+id/tableCardBox"
                 android:layout_width="wrap_content"
-                android:layout_height="290dp"
+                android:layout_height="300dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/mainactivityborder">
+
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -109,53 +114,55 @@
             <Button
                 android:id="@+id/capture"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="66dp"
                 android:layout_height="wrap_content"
-                android:text="CAPTURE"
                 android:layout_weight="1"
-                android:textSize="12sp"
+                android:onClick="humanCaptureMove"
                 android:padding="0dp"
-                android:onClick="humanCaptureMove"/>
+                android:text="CAPTURE"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/setBuild"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SET BUILD"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:padding="0dp"/>
+                android:padding="0dp"
+                android:onClick="setBuildHuman"
+                android:text="SET BUILD"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/trail"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="53dp"
                 android:layout_height="wrap_content"
-                android:text="TRAIL"
                 android:layout_weight="1"
-                android:textSize="12sp"
+                android:onClick="trailHumanCard"
                 android:padding="0dp"
-                android:onClick="trailHumanCard"/>
+                android:text="TRAIL"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/extendBuild"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Extend Build"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:padding="0dp"/>
+                android:padding="0dp"
+                android:text="Extend Build"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/multiBuild"
+                android:id="@+id/captureBuild"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Multi Build"
+                android:text="Capture Build"
+                android:onClick="doCaptureBuild"
                 android:layout_weight="1"
-                android:textSize="13sp"
+                android:textSize="10sp"
                 android:padding="0dp"/>
 
         </LinearLayout>

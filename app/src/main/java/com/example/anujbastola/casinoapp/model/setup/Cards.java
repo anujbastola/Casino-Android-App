@@ -2,6 +2,14 @@ package com.example.anujbastola.casinoapp.model.setup;
 
 public class Cards {
 
+    public void setFace(String face) {
+        this.face = face;
+    }
+
+    public void setSuit(String suit) {
+        this.suit = suit;
+    }
+
     // This variable holds the face name of a card
     private String face;
 
