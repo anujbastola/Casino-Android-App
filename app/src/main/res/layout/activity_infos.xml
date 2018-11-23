@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,23 +18,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Computer's Pile"/>
+                android:text="Computer's Pile" />
         </LinearLayout>
 
         <!--Scrollable View to display cards from computer's pile -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
+                android:id="@+id/computerPileDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="horizontal"
                 android:background="@drawable/mainactivityborder"
-                android:id="@+id/computerPileDisplay">
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
         </HorizontalScrollView>
 
         <!--Human Pile Text View-->
@@ -40,10 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Human's Pile"/>
+                android:text="Human's Pile" />
         </LinearLayout>
 
         <!--Scrollable View to display cards from human's pile -->
@@ -52,12 +56,11 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/humanPileDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="horizontal"
                 android:background="@drawable/mainactivityborder"
-                android:id="@+id/humanPileDisplay">
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
         </HorizontalScrollView>
 
         <!--Deck card Text View-->
@@ -65,10 +68,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Deck Cards"/>
+                android:text="Deck Cards" />
         </LinearLayout>
 
         <!--Scrollable View to display cards from Deck -->
@@ -77,18 +81,31 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/deckDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="horizontal"
-                android:minWidth="400dp"
                 android:background="@drawable/mainactivityborder"
-                android:id="@+id/deckDisplay">
+                android:minWidth="400dp"
+                android:orientation="horizontal">
 
             </LinearLayout>
         </HorizontalScrollView>
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/nextInInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="Next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
 </android.support.constraint.ConstraintLayout>

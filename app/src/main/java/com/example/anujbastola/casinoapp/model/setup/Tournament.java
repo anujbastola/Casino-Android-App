@@ -1,6 +1,7 @@
 package com.example.anujbastola.casinoapp.model.setup;
 
 import android.app.AlertDialog;
+import android.view.View;
 
 import com.example.anujbastola.casinoapp.R;
 
@@ -11,6 +12,8 @@ public class Tournament {
     private  int humanScore;
 
     private  int roundNumber;
+
+    private Round round= new Round();
 
     public Tournament(){
         humanScore = 0;
@@ -36,5 +39,17 @@ public class Tournament {
 
   //  public void trailHumanCard(Cards humanCardSe)
 
+    public void loadGame(String path){
+
+    }
+
+
+    public void newGame(){
+
+    }
+
+    public void trailHumanCard(Cards handCardSelected){
+
+    }
 
 }

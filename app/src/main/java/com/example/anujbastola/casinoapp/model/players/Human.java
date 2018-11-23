@@ -9,8 +9,8 @@ public class Human extends Player {
 
         private  String help;
 
-        public  String askForHelp(Deque<Deque<Cards>> table){
-
+        public  String askForHelp(Deque<Deque<Cards>> mytable){
+            table = mytable;
 
             System.out.println("Table in Human Class: " + table);
 
@@ -21,6 +21,9 @@ public class Human extends Player {
 
             builtsFromTable = getBuiltFromTable();
 
+            System.out.println("Builts from table in Human class " + builtsFromTable);
+            System.out.println("Find Single best build in Human Class " + built);
+
             if ( hasOwnBuild(builtsFromTable)){
 
             }
@@ -29,21 +32,19 @@ public class Human extends Player {
                 build.setOwner(false);
             }
 
-            int buildPosition = 0;
-            Cards handC = new Cards();
             if ( DXCaptureIsPossible()){
                 help = "DX Capture is possible. It will give you 2 points.";
             }
             else if ( aceCaptureIsPossible()){
                 help = "Capture Ace Card(s). It will give you 1 point for each Ace capture";
             }
-//            else  if (helpModeCheckExtend()){
-//                help = "Extend Opponent's build";
-//            }
-            else if(isBuildCapturePossible(buildPosition)){
+            else  if (helpModeCheckExtend()){
+                help = "Extend Opponent's build";
+            }
+            else if(isBuildCapturePossible()){
                 help = "Capture Build from table.";
             }
-            else  if (built.size() > 0){
+            else  if (possibleBuilds.size() > 0){
                 help = "The possible build that you could you use to set are : " + possibleBuilds;
             }
             else if ( isThereCapture()){
@@ -60,27 +61,26 @@ public class Human extends Player {
 
 
 
-//    public boolean helpModeCheckExtend() {
-//
-//        Deque<Deque<Cards>> opponentBuilds = getOpponentBuilds();
-//        Deque<Cards> temp;
-//        for (Deque<Cards> eachBuild : opponentBuilds) {
-//            int sum = 0;
-//            for (Cards eachCard : eachBuild) {
-//                sum = sum + getCardNumber(eachCard);
-//            }
-//
-//            for (Cards playerCard : returnPlayerHand()) {
-//                for (Cards tempPlayerCard : returnPlayerHand()) {
-//                    if ((getCardNumber(playerCard) + sum) == getCardNumber(tempPlayerCard)) {
-//                        printDeque(eachBuild);
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    public boolean helpModeCheckExtend() {
+
+        Deque<Deque<Cards>> opponentBuilds = getOpponentBuilds();
+        Deque<Cards> temp;
+        for (Deque<Cards> eachBuild : opponentBuilds) {
+            int sum = 0;
+            for (Cards eachCard : eachBuild) {
+                sum = sum + getCardNumber(eachCard);
+            }
+
+            for (Cards playerCard : returnPlayerHand()) {
+                for (Cards tempPlayerCard : returnPlayerHand()) {
+                    if ((getCardNumber(playerCard) + sum) == getCardNumber(tempPlayerCard)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 }
 

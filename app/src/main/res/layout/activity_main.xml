@@ -26,6 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/save_game"
+                android:onClick="saveGame"
                 android:textSize="12sp" />
 
             <Button
@@ -150,6 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="extendBuild"
                 android:padding="0dp"
                 android:text="Extend Build"
                 android:textSize="10sp" />
